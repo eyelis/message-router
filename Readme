@@ -1,0 +1,4 @@
+Docker Install Kafka and postgres : docker-compose up -d
+Build Springboot Application : mvn clean package
+Launch Springboot Application : java - jar  .\target\message-router.jar
+Swagger : http://localhost:8080/swagger-ui/index.htm
