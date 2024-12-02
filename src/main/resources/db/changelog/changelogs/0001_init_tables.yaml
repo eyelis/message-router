@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: eyelis
+      changes:
+        - createTable:
+            tableName: message
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: content
+                  type: varchar(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: partner
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: alias
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: direction
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: application
+                  type: varchar(250)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: flow
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: description
+                  type: varchar(250)
+                  constraints:
+                    nullable: false

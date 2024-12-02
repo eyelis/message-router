@@ -1,0 +1,29 @@
+application:
+  name: "message-router"
+
+server:
+  port: 8080
+
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic: topic-1
+    consumer:
+      client-id: message-router
+      group-id: group-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+
+    liquibase:
+      change-log: classpath:/db/changelog/db.changelog-master.yaml
