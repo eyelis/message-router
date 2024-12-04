@@ -4,6 +4,6 @@ Prerequisites :
 
 1- Docker Install Kafka and postgres : docker-compose up -d
 2- Build Springboot Application : mvn clean package
-3- Launch Springboot Application : java - jar  .\target\message-router.jar
+3- Launch Springboot Application : java - jar  target\message-router.jar
 4- Swagger : http://localhost:8080/swagger-ui/index.htm
 5- Send message to kafka queue: /api/message/send
