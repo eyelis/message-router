@@ -27,3 +27,15 @@ spring:
 
     liquibase:
       change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+api:
+  info:
+    title: "Message Router API"
+    description: "API documentation for the Message application"
+    version: "1.0.0"
