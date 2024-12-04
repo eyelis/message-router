@@ -1,11 +1,11 @@
-application:
-  name: "message-router"
-
 server:
   port: 8080
 
 
 spring:
+  application:
+    name: "message-router"
+
   kafka:
     bootstrap-servers: localhost:9092
     topic: topic-1
