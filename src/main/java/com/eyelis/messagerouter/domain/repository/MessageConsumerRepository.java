@@ -1,6 +1,10 @@
 package com.eyelis.messagerouter.domain.repository;
 
 public interface MessageConsumerRepository {
-    void consume(String message);
 
+    void consumeMessage(String key, String content);
+
+    void consumeAlerting(String key, String content);
+
+    void consumeNotification(String key, String content);
 }

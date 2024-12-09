@@ -48,8 +48,8 @@ public class MessageControllerTest {
     void shouldListMessage() throws Exception {
         // given / arrange
         List<Message> expectedMessages = List.of(
-                new Message(1L, "Message1", LocalDateTime.now()),
-                new Message(2L, "Message2", LocalDateTime.now())
+                new Message(1L, "key1", "Message1", LocalDateTime.now()),
+                new Message(2L, "key2", "Message2", LocalDateTime.now())
         );
 
         when(useCase.execute()).thenReturn(expectedMessages);

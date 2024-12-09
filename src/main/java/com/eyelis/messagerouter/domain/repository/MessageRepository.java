@@ -9,4 +9,6 @@ public interface MessageRepository {
     Message save(Message message);
     Optional<Message> findById(Long id);
     List<Message> findAll();
+
+    void deleteById(Long id);
 }

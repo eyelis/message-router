@@ -15,6 +15,7 @@ spring:
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -39,3 +40,16 @@ api:
     title: "Message Router API"
     description: "API documentation for the Message application"
     version: "1.0.0"
+
+kafka-listener:
+  groups:
+    message:
+      group-id: message
+      concurrency: 3
+    alerting:
+      group-id: alerting
+      concurrency: 2
+    notification:
+      group-id: notification
+      concurrency: 4
+

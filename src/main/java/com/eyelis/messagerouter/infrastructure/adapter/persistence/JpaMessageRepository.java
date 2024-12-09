@@ -21,21 +21,26 @@ public class JpaMessageRepository implements MessageRepository {
     @Override
     public Optional<Message> findById(Long id) {
         return jpaRepository.findById(id)
-                .map(entity -> new Message(entity.id(), entity.content(), entity.timestamp()));
+                .map(entity -> new Message(entity.id(), entity.key(), entity.content(), entity.timestamp()));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jpaRepository.deleteById(id);
     }
 
     @Override
     public List<Message> findAll() {
         return jpaRepository.findAll().stream()
-                .map(entity -> new Message(entity.id(), entity.content(), entity.timestamp()))
+                .map(entity -> new Message(entity.id(), entity.key(), entity.content(), entity.timestamp()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Message save(Message message) {
-        MessageEntity entity = new MessageEntity(message.id(), message.content(), message.timestamp());
+        MessageEntity entity = new MessageEntity(message.id(), message.key(), message.content(), message.timestamp());
         MessageEntity savedEntity = jpaRepository.save(entity);
-        return new Message(savedEntity.id(), savedEntity.content(), savedEntity.timestamp());
+        return new Message(savedEntity.id(), savedEntity.key(), savedEntity.content(), savedEntity.timestamp());
     }
 
 }

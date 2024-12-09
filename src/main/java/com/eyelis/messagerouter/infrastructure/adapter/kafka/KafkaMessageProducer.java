@@ -12,7 +12,7 @@ public class KafkaMessageProducer implements MessageProducerRepository {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
-    public void produce(final String topic, final String content) {
-        kafkaTemplate.send(topic, content);
+    public void produce(final String topic, final String key, final String content) {
+        kafkaTemplate.send(topic, key, content);
     }
 }

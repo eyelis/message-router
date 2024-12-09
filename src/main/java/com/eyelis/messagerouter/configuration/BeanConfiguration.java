@@ -10,11 +10,6 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfiguration {
 
     @Bean
-    public CreateMessageUseCase createMessageUseCase(MessageRepository repository) {
-        return new CreateMessageUseCase(repository);
-    }
-
-    @Bean
     public GetMessageUseCase getMessageUseCase(MessageRepository repository) {
         return new GetMessageUseCase(repository);
     }
@@ -23,6 +18,12 @@ public class BeanConfiguration {
     public ListMessageUseCase listMessageUseCase(MessageRepository repository) {
         return new ListMessageUseCase(repository);
     }
+
+    @Bean
+    public DeleteMessageUseCase deleteMessageUseCase(MessageRepository repository) {
+        return new DeleteMessageUseCase(repository);
+    }
+
 
     @Bean
     public CreatePartnerUseCase createPartnerUseCase(PartnerRepository repository) {

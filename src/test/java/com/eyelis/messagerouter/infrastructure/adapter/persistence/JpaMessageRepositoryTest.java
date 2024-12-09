@@ -35,8 +35,8 @@ public class JpaMessageRepositoryTest {
     void shouldCreateMessage() {
 
         //given / arrange
-        Message message = new Message(null, "Message", LocalDateTime.now());
-        MessageEntity entity = new MessageEntity(null, message.content(), message.timestamp());
+        Message message = new Message(null, "key", "Message", LocalDateTime.now());
+        MessageEntity entity = new MessageEntity(null, "key", message.content(), message.timestamp());
         when(repository.save(any(MessageEntity.class))).thenReturn(entity);
 
         // when / act
@@ -62,8 +62,8 @@ public class JpaMessageRepositoryTest {
         //given / arrange
         final LocalDateTime date = LocalDateTime.now();
         List<MessageEntity> entities = List.of(
-                new MessageEntity(1L, "Message1", date),
-                new MessageEntity(2L, "Message2", date)
+                new MessageEntity(1L, "key", "Message1", date),
+                new MessageEntity(2L, "key", "Message2", date)
         );
         when(repository.findAll()).thenReturn(entities);
 
@@ -77,11 +77,10 @@ public class JpaMessageRepositoryTest {
                 .usingRecursiveComparison()
                 .isEqualTo(entities
                         .stream()
-                        .map(entity -> new Message(entity.id(), entity.content(), entity.timestamp()))
+                        .map(entity -> new Message(entity.id(), "key", entity.content(), entity.timestamp()))
                         .collect(Collectors.toList())
                 );
 
         verify(repository).findAll();
     }
-
 }

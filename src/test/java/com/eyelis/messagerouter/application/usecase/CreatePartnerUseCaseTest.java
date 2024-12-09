@@ -1,7 +1,9 @@
 package com.eyelis.messagerouter.application.usecase;
 
-import com.eyelis.messagerouter.domain.model.Message;
-import com.eyelis.messagerouter.domain.repository.MessageRepository;
+import com.eyelis.messagerouter.domain.model.Direction;
+import com.eyelis.messagerouter.domain.model.Flow;
+import com.eyelis.messagerouter.domain.model.Partner;
+import com.eyelis.messagerouter.domain.repository.PartnerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -10,45 +12,52 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateMessageUseCaseTest {
+public class CreatePartnerUseCaseTest {
 
     @Mock
-    MessageRepository repository;
+    PartnerRepository repository;
 
     @InjectMocks
-    CreateMessageUseCase useCase;
+    CreatePartnerUseCase useCase;
 
     @Captor
-    ArgumentCaptor<Message> messageCaptor;
+    ArgumentCaptor<Partner> partnerCaptor;
 
     @Test
     void shouldCreateMessage() {
         // given / arrange
-        Message message = new Message(1L, "Message",  LocalDateTime.now());
-        when(repository.save(any(Message.class))).thenReturn(message);
+        Partner partner = new Partner(
+                1L,
+                "type",
+                "alias",
+                Direction.INBOUND,
+                "application",
+                Flow.ALERTING,
+                "description"
+        );
+
+        when(repository.save(any(Partner.class))).thenReturn(partner);
 
         // when / act
-        Message result = useCase.execute(message.content(), message.timestamp());
+        Partner result = useCase.execute(partner);
 
         // then / assert
         assertThat(result).isNotNull();
         assertThat(result)
                 .usingRecursiveComparison()
-                .isEqualTo(message);
+                .isEqualTo(partner);
 
-        verify(repository).save(messageCaptor.capture());
+        verify(repository).save(partnerCaptor.capture());
 
         assertThat(result)
                 .usingRecursiveComparison()
                 .ignoringFields("id")
-                .isEqualTo(messageCaptor.getValue());
+                .isEqualTo(partnerCaptor.getValue());
     }
 }

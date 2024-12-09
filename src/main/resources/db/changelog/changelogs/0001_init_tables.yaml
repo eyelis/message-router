@@ -14,6 +14,11 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
               - column:
+                  name: key
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
                   name: content
                   type: varchar(512)
                   constraints:
