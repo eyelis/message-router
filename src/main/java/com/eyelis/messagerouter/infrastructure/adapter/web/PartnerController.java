@@ -1,6 +1,7 @@
 package com.eyelis.messagerouter.infrastructure.adapter.web;
 
 import com.eyelis.messagerouter.application.usecase.CreatePartnerUseCase;
+import com.eyelis.messagerouter.application.usecase.DeletePartnerUseCase;
 import com.eyelis.messagerouter.application.usecase.GetPartnerUseCase;
 import com.eyelis.messagerouter.application.usecase.ListPartnerUseCase;
 import com.eyelis.messagerouter.domain.model.Partner;
@@ -23,6 +24,7 @@ public class PartnerController {
     private final CreatePartnerUseCase createPartnerUseCase;
     private final GetPartnerUseCase getPartnerUseCase;
     private final ListPartnerUseCase listPartnerUseCase;
+    private final DeletePartnerUseCase deletePartnerUseCase;
 
     @PostMapping
     public ResponseEntity<Partner> createPartner(@RequestBody
@@ -30,7 +32,7 @@ public class PartnerController {
     ) {
         log.info(STR."Creating partner [\{partner}]");
         Partner savedPartner = createPartnerUseCase.execute(partner);
-        URI location = URI.create("/api/partners/" + savedPartner.id());
+        URI location = URI.create(STR."/api/partners/\{savedPartner.id()}");
         return ResponseEntity.created(location).body(savedPartner);
     }
 
@@ -46,6 +48,13 @@ public class PartnerController {
     public ResponseEntity<List<Partner>> listPartners() {
         log.info("Listing partners");
         return ResponseEntity.ok(listPartnerUseCase.execute());
+    }
+
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        log.info(STR."Deleting partner by id [\{id}] ");
+        deletePartnerUseCase.execute(id);
     }
 
 }

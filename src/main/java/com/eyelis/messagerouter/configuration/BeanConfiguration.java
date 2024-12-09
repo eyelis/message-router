@@ -39,4 +39,9 @@ public class BeanConfiguration {
     public ListPartnerUseCase listPartnerUseCase(PartnerRepository repository) {
         return new ListPartnerUseCase(repository);
     }
+
+    @Bean
+    public DeletePartnerUseCase deletePartnerUseCase(PartnerRepository repository) {
+        return new DeletePartnerUseCase(repository);
+    }
 }

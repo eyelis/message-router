@@ -48,6 +48,11 @@ public class JpaPartnerRepository implements PartnerRepository {
     }
 
     @Override
+    public void deleteById(final Long id) {
+        jpaRepository.deleteById(id);
+    }
+
+    @Override
     public Partner save(Partner partner) {
         PartnerEntity entity = new PartnerEntity(
                 partner.id(),

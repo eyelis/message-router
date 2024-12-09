@@ -11,4 +11,6 @@ public interface PartnerRepository {
     Optional<Partner> findById(Long id);
 
     List<Partner> findAll();
+
+    void deleteById(Long id);
 }
