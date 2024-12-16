@@ -1,9 +1,11 @@
 package com.eyelis.messagerouter.infrastructure.adapter.kafka;
 
+import com.eyelis.messagerouter.configuration.MockDatabaseConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,10 +18,12 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Import(MockDatabaseConfig.class)
 @EmbeddedKafka(partitions = 1, topics = {"test-topic"})
 public class KafkaMessageConsumerTest {
 
     private static final String TEST_TOPIC = "test-topic";
+
     @Autowired
     private EmbeddedKafkaBroker embeddedKafkaBroker;
 
