@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PartnerRepository {
-    Partner save(Partner partner);
+    Optional<Partner> save(Partner partner);
 
     Optional<Partner> findById(Long id);
 

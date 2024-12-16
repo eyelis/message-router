@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -42,20 +44,20 @@ public class CreatePartnerUseCaseTest {
                 "description"
         );
 
-        when(repository.save(any(Partner.class))).thenReturn(partner);
+        when(repository.save(any(Partner.class))).thenReturn(Optional.of(partner));
 
         // when / act
-        final Partner result = useCase.execute(partner);
+        final Optional<Partner> result = useCase.execute(partner);
 
         // then / assert
-        assertThat(result).isNotNull();
-        assertThat(result)
+        assertThat(result).isPresent();
+        assertThat(result.get())
                 .usingRecursiveComparison()
                 .isEqualTo(partner);
 
         verify(repository).save(partnerCaptor.capture());
 
-        assertThat(result)
+        assertThat(result.get())
                 .usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(partnerCaptor.getValue());

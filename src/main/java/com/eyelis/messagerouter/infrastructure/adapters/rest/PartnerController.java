@@ -29,9 +29,12 @@ public class PartnerController {
     @PostMapping
     public ResponseEntity<Partner> createPartner(@RequestBody final Partner partner) {
         log.info(STR."Creating partner [\{partner}]");
-        final Partner savedPartner = createPartnerUseCase.execute(partner);
-        final URI location = URI.create(STR."/api/partners/\{savedPartner.id()}");
-        return ResponseEntity.created(location).body(savedPartner);
+        return createPartnerUseCase.execute(partner)
+                .map(savedPartner -> {
+                    final URI location = URI.create(STR."/api/partners/\{savedPartner.id()}");
+                    return ResponseEntity.created(location).body(savedPartner);
+                }).orElse(null);
+
     }
 
     @GetMapping("/{id}")

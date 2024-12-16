@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,15 +50,15 @@ public class JpaPartnerRepositoryTest {
         );
 
         final PartnerEntity entity = PartnerMapper.INSTANCE.toEntity(partner);
-        
+
         when(repository.save(any(PartnerEntity.class))).thenReturn(entity);
 
         // when / act
-        final Partner result = jpaRepository.save(partner);
+        final Optional<Partner> result = jpaRepository.save(partner);
 
         // then / assert
-        assertThat(result).isNotNull();
-        assertThat(result)
+        assertThat(result).isPresent();
+        assertThat(result.get())
                 .usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(partner);

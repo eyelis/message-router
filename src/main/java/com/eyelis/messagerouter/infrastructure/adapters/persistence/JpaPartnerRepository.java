@@ -19,8 +19,8 @@ public class JpaPartnerRepository implements PartnerRepository {
     }
 
     @Override
-    public Partner save(final Partner partner) {
-        return PartnerMapper.INSTANCE.toDto(jpaRepository.save(PartnerMapper.INSTANCE.toEntity(partner)));
+    public Optional<Partner> save(final Partner partner) {
+        return Optional.of(jpaRepository.save(PartnerMapper.INSTANCE.toEntity(partner))).map(PartnerMapper.INSTANCE::toDto);
     }
 
     @Override

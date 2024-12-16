@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,13 +25,13 @@ import static org.mockito.Mockito.when;
 public class JpaMessageRepositoryTest {
 
     @Mock
-    SpringJpaMessageRepository repository;
+    private SpringJpaMessageRepository repository;
 
     @InjectMocks
-    JpaMessageRepository jpaRepository;
+    private JpaMessageRepository jpaRepository;
 
     @Captor
-    ArgumentCaptor<MessageEntity> entityCaptor;
+    private ArgumentCaptor<MessageEntity> entityCaptor;
 
     @Test
     void shouldCreateMessage() {
@@ -41,11 +42,11 @@ public class JpaMessageRepositoryTest {
         when(repository.save(any(MessageEntity.class))).thenReturn(entity);
 
         // when / act
-        final Message result = jpaRepository.save(message);
+        final Optional<Message> result = jpaRepository.save(message);
 
         // then / assert
-        assertThat(result).isNotNull();
-        assertThat(result)
+        assertThat(result).isPresent();
+        assertThat(result.get())
                 .usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(message);

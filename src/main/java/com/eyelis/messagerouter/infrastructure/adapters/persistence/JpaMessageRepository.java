@@ -19,8 +19,8 @@ public class JpaMessageRepository implements MessageRepository {
     }
 
     @Override
-    public Message save(final Message message) {
-        return MessageMapper.INSTANCE.toDto(jpaRepository.save(MessageMapper.INSTANCE.toEntity(message)));
+    public Optional<Message> save(final Message message) {
+        return Optional.of(jpaRepository.save(MessageMapper.INSTANCE.toEntity(message))).map(MessageMapper.INSTANCE::toDto);
     }
 
     @Override

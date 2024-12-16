@@ -17,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,7 +49,7 @@ public class PartnerControllerTest {
     @Test
     void shouldCreateMessage() throws Exception {
         // given / arrange
-        Partner partnerRequest = new Partner(
+        final Partner partnerRequest = new Partner(
                 null,
                 "type",
                 "alias",
@@ -57,7 +59,7 @@ public class PartnerControllerTest {
                 "description"
         );
 
-        Partner partnerResponse = new Partner(
+        final Partner partnerResponse = new Partner(
                 1L,
                 "type",
                 "alias",
@@ -67,9 +69,9 @@ public class PartnerControllerTest {
                 "description"
         );
 
-        String requestBody = toJson(partnerRequest);
+        final String requestBody = toJson(partnerRequest);
 
-        when(useCase.execute(any(Partner.class))).thenReturn(partnerResponse);
+        when(useCase.execute(any(Partner.class))).thenReturn(Optional.of(partnerResponse));
 
         mockMvc.perform(post("/api/partners")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +89,7 @@ public class PartnerControllerTest {
                 .andDo(print());
     }
 
-    private String toJson(Object obj) throws JsonProcessingException {
+    private String toJson(final Object obj) throws JsonProcessingException {
         return objectMapper.writeValueAsString(obj);
     }
 }
