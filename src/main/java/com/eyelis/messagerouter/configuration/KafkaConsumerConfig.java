@@ -1,6 +1,5 @@
 package com.eyelis.messagerouter.configuration;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -74,7 +73,8 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
-    @Data
+    @Getter
+    @Setter
     public static class Consumer {
         private String clientId;
         private String groupId;
