@@ -2,7 +2,7 @@ package com.eyelis.messagerouter.infrastructure.adapters.persistence;
 
 import com.eyelis.messagerouter.application.ports.out.PartnerRepository;
 import com.eyelis.messagerouter.domain.model.Partner;
-import com.eyelis.messagerouter.infrastructure.adapters.entity.PartnerEntity;
+import com.eyelis.messagerouter.infrastructure.adapters.persistence.mapper.PartnerMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,63 +14,27 @@ public class JpaPartnerRepository implements PartnerRepository {
 
     private final SpringJpaPartnerRepository jpaRepository;
 
-    public JpaPartnerRepository(SpringJpaPartnerRepository jpaRepository) {
+    public JpaPartnerRepository(final SpringJpaPartnerRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
 
     @Override
-    public Optional<Partner> findById(Long id) {
-        return jpaRepository.findById(id)
-                .map(entity -> new Partner(
-                        entity.id(),
-                        entity.type(),
-                        entity.alias(),
-                        entity.direction(),
-                        entity.application(),
-                        entity.flow(),
-                        entity.description())
-                );
+    public Partner save(final Partner partner) {
+        return PartnerMapper.INSTANCE.toDto(jpaRepository.save(PartnerMapper.INSTANCE.toEntity(partner)));
+    }
+
+    @Override
+    public Optional<Partner> findById(final Long id) {
+        return jpaRepository.findById(id).map(PartnerMapper.INSTANCE::toDto);
     }
 
     @Override
     public List<Partner> findAll() {
-        return jpaRepository.findAll().stream()
-                .map(entity -> new Partner(
-                        entity.id(),
-                        entity.type(),
-                        entity.alias(),
-                        entity.direction(),
-                        entity.application(),
-                        entity.flow(),
-                        entity.description())
-                )
-                .collect(Collectors.toList());
+        return jpaRepository.findAll().stream().map(PartnerMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
     @Override
     public void deleteById(final Long id) {
         jpaRepository.deleteById(id);
-    }
-
-    @Override
-    public Partner save(Partner partner) {
-        PartnerEntity entity = new PartnerEntity(
-                partner.id(),
-                partner.type(),
-                partner.alias(),
-                partner.direction(),
-                partner.application(),
-                partner.flow(),
-                partner.description()
-        );
-        PartnerEntity savedEntity = jpaRepository.save(entity);
-        return new Partner(
-                savedEntity.id(),
-                savedEntity.type(),
-                savedEntity.alias(),
-                savedEntity.direction(),
-                savedEntity.application(),
-                savedEntity.flow(),
-                savedEntity.description());
     }
 }

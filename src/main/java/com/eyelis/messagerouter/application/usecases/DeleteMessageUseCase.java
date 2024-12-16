@@ -8,7 +8,7 @@ public class DeleteMessageUseCase {
 
     private final MessageRepository messageRepository;
 
-    public void execute(Long id) {
+    public void execute(final Long id) {
         messageRepository.deleteById(id);
     }
 }

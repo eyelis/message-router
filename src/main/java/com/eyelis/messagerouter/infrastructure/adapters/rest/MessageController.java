@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -32,10 +31,9 @@ public class MessageController {
     private String topic;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Message> getMessage(@PathVariable Long id) {
+    public ResponseEntity<Message> getMessage(@PathVariable final Long id) {
         log.info(STR."Getting message by id [\{id}] ");
-        Optional<Message> message = getMessageUseCase.execute(id);
-        return message.map(ResponseEntity::ok)
+        return getMessageUseCase.execute(id).map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -46,14 +44,16 @@ public class MessageController {
     }
 
     @PostMapping("send")
-    public void sendMessage(@RequestBody MessageRequest request) {
+    public ResponseEntity<Void> sendMessage(@RequestBody final MessageRequest request) {
         log.info(STR."Sending topic [\{topic}] request [\{request}] ");
         sendMessageUseCase.execute(topic, request.key(), request.message());
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable final Long id) {
         log.info(STR."Deleting message by id [\{id}] ");
         deleteMessageUseCase.execute(id);
+        return ResponseEntity.ok().build();
     }
 }

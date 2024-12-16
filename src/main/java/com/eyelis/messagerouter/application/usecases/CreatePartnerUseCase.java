@@ -9,7 +9,7 @@ public class CreatePartnerUseCase {
 
     private final PartnerRepository partnerRepository;
 
-    public Partner execute(Partner partner) {
+    public Partner execute(final Partner partner) {
         return partnerRepository.save(partner);
     }
 }

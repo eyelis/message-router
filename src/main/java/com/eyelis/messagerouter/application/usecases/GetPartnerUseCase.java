@@ -11,7 +11,7 @@ public class GetPartnerUseCase {
 
     private final PartnerRepository partnerRepository;
 
-    public Optional<Partner> execute(Long id) {
+    public Optional<Partner> execute(final Long id) {
         return partnerRepository.findById(id);
     }
 }

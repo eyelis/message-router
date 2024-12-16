@@ -8,7 +8,7 @@ public class DeletePartnerUseCase {
 
     private final PartnerRepository partnerRepository;
 
-    public void execute(Long id) {
+    public void execute(final Long id) {
         partnerRepository.deleteById(id);
     }
 }

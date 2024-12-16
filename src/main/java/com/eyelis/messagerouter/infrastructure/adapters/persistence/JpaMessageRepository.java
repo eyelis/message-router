@@ -2,7 +2,7 @@ package com.eyelis.messagerouter.infrastructure.adapters.persistence;
 
 import com.eyelis.messagerouter.application.ports.out.MessageRepository;
 import com.eyelis.messagerouter.domain.model.Message;
-import com.eyelis.messagerouter.infrastructure.adapters.entity.MessageEntity;
+import com.eyelis.messagerouter.infrastructure.adapters.persistence.mapper.MessageMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,33 +14,28 @@ public class JpaMessageRepository implements MessageRepository {
 
     private final SpringJpaMessageRepository jpaRepository;
 
-    public JpaMessageRepository(SpringJpaMessageRepository jpaRepository) {
+    public JpaMessageRepository(final SpringJpaMessageRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
 
     @Override
-    public Optional<Message> findById(Long id) {
-        return jpaRepository.findById(id)
-                .map(entity -> new Message(entity.id(), entity.key(), entity.content(), entity.timestamp()));
+    public Message save(final Message message) {
+        return MessageMapper.INSTANCE.toDto(jpaRepository.save(MessageMapper.INSTANCE.toEntity(message)));
     }
 
     @Override
-    public void deleteById(Long id) {
-        jpaRepository.deleteById(id);
+    public Optional<Message> findById(final Long id) {
+        return jpaRepository.findById(id).map(MessageMapper.INSTANCE::toDto);
     }
 
     @Override
     public List<Message> findAll() {
-        return jpaRepository.findAll().stream()
-                .map(entity -> new Message(entity.id(), entity.key(), entity.content(), entity.timestamp()))
-                .collect(Collectors.toList());
+        return jpaRepository.findAll().stream().map(MessageMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public Message save(Message message) {
-        MessageEntity entity = new MessageEntity(message.id(), message.key(), message.content(), message.timestamp());
-        MessageEntity savedEntity = jpaRepository.save(entity);
-        return new Message(savedEntity.id(), savedEntity.key(), savedEntity.content(), savedEntity.timestamp());
+    public void deleteById(final Long id) {
+        jpaRepository.deleteById(id);
     }
 
 }

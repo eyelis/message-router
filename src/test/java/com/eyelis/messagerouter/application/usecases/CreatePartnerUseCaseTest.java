@@ -32,7 +32,7 @@ public class CreatePartnerUseCaseTest {
     @Test
     void shouldCreateMessage() {
         // given / arrange
-        Partner partner = new Partner(
+        final Partner partner = new Partner(
                 1L,
                 "type",
                 "alias",
@@ -45,7 +45,7 @@ public class CreatePartnerUseCaseTest {
         when(repository.save(any(Partner.class))).thenReturn(partner);
 
         // when / act
-        Partner result = useCase.execute(partner);
+        final Partner result = useCase.execute(partner);
 
         // then / assert
         assertThat(result).isNotNull();

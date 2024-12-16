@@ -11,7 +11,7 @@ public class GetMessageUseCase {
 
     private final MessageRepository messageRepository;
 
-    public Optional<Message> execute(Long id) {
+    public Optional<Message> execute(final Long id) {
         return messageRepository.findById(id);
     }
 }

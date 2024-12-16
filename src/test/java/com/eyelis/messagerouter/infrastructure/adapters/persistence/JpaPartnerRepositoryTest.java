@@ -4,6 +4,7 @@ import com.eyelis.messagerouter.domain.model.Direction;
 import com.eyelis.messagerouter.domain.model.Flow;
 import com.eyelis.messagerouter.domain.model.Partner;
 import com.eyelis.messagerouter.infrastructure.adapters.entity.PartnerEntity;
+import com.eyelis.messagerouter.infrastructure.adapters.persistence.mapper.PartnerMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -37,7 +38,7 @@ public class JpaPartnerRepositoryTest {
     void shouldCreatePartner() {
 
         //given / arrange
-        Partner partner = new Partner(
+        final Partner partner = new Partner(
                 null,
                 "type",
                 "alias",
@@ -47,19 +48,12 @@ public class JpaPartnerRepositoryTest {
                 "description"
         );
 
-        PartnerEntity entity = new PartnerEntity(
-                partner.id(),
-                partner.type(),
-                partner.alias(),
-                partner.direction(),
-                partner.application(),
-                partner.flow(),
-                partner.description()
-        );
+        final PartnerEntity entity = PartnerMapper.INSTANCE.toEntity(partner);
+        
         when(repository.save(any(PartnerEntity.class))).thenReturn(entity);
 
         // when / act
-        Partner result = jpaRepository.save(partner);
+        final Partner result = jpaRepository.save(partner);
 
         // then / assert
         assertThat(result).isNotNull();
@@ -80,7 +74,7 @@ public class JpaPartnerRepositoryTest {
 
         //given / arrange
         final LocalDateTime date = LocalDateTime.now();
-        List<PartnerEntity> entities = List.of(
+        final List<PartnerEntity> entities = List.of(
                 new PartnerEntity(
                         null,
                         "type1",
@@ -103,7 +97,7 @@ public class JpaPartnerRepositoryTest {
         when(repository.findAll()).thenReturn(entities);
 
         // when / act
-        List<Partner> result = jpaRepository.findAll();
+        final List<Partner> result = jpaRepository.findAll();
 
         // then / assert
         assertThat(result).hasSize(2);
@@ -112,15 +106,7 @@ public class JpaPartnerRepositoryTest {
                 .usingRecursiveComparison()
                 .isEqualTo(entities
                         .stream()
-                        .map(entity -> new Partner(
-                                entity.id(),
-                                entity.type(),
-                                entity.alias(),
-                                entity.direction(),
-                                entity.application(),
-                                entity.flow(),
-                                entity.description()
-                        ))
+                        .map(PartnerMapper.INSTANCE::toDto)
                         .collect(Collectors.toList())
                 );
 

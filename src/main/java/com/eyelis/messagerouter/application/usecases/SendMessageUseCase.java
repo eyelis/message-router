@@ -9,7 +9,7 @@ public class SendMessageUseCase {
     private final MessageProducer messageProducer;
 
     public void execute(final String topic, final String key, final String content) {
-        var future = messageProducer.produce(topic, key, content);
+        final var future = messageProducer.produce(topic, key, content);
         future.whenComplete((sendResult, exception) -> {
             if (exception == null) {
                 future.complete(sendResult);

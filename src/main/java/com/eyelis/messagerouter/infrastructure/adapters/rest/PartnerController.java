@@ -27,21 +27,18 @@ public class PartnerController {
     private final DeletePartnerUseCase deletePartnerUseCase;
 
     @PostMapping
-    public ResponseEntity<Partner> createPartner(@RequestBody
-                                                 Partner partner
-    ) {
+    public ResponseEntity<Partner> createPartner(@RequestBody final Partner partner) {
         log.info(STR."Creating partner [\{partner}]");
-        Partner savedPartner = createPartnerUseCase.execute(partner);
-        URI location = URI.create(STR."/api/partners/\{savedPartner.id()}");
+        final Partner savedPartner = createPartnerUseCase.execute(partner);
+        final URI location = URI.create(STR."/api/partners/\{savedPartner.id()}");
         return ResponseEntity.created(location).body(savedPartner);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Partner> getPartner(@PathVariable Long id) {
+    public ResponseEntity<Partner> getPartner(@PathVariable final Long id) {
         log.info(STR."Getting partner by id [\{id}] ");
-        Optional<Partner> partner = getPartnerUseCase.execute(id);
-        return partner.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        final Optional<Partner> partner = getPartnerUseCase.execute(id);
+        return partner.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
@@ -50,11 +47,11 @@ public class PartnerController {
         return ResponseEntity.ok(listPartnerUseCase.execute());
     }
 
-
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable final Long id) {
         log.info(STR."Deleting partner by id [\{id}] ");
         deletePartnerUseCase.execute(id);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -2,6 +2,7 @@ package com.eyelis.messagerouter.infrastructure.adapters.persistence;
 
 import com.eyelis.messagerouter.domain.model.Message;
 import com.eyelis.messagerouter.infrastructure.adapters.entity.MessageEntity;
+import com.eyelis.messagerouter.infrastructure.adapters.persistence.mapper.MessageMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -35,12 +36,12 @@ public class JpaMessageRepositoryTest {
     void shouldCreateMessage() {
 
         //given / arrange
-        Message message = new Message(null, "key", "Message", LocalDateTime.now());
-        MessageEntity entity = new MessageEntity(null, "key", message.content(), message.timestamp());
+        final Message message = new Message(null, "key", "Message", LocalDateTime.now());
+        final MessageEntity entity = MessageMapper.INSTANCE.toEntity(message);
         when(repository.save(any(MessageEntity.class))).thenReturn(entity);
 
         // when / act
-        Message result = jpaRepository.save(message);
+        final Message result = jpaRepository.save(message);
 
         // then / assert
         assertThat(result).isNotNull();
@@ -61,14 +62,14 @@ public class JpaMessageRepositoryTest {
 
         //given / arrange
         final LocalDateTime date = LocalDateTime.now();
-        List<MessageEntity> entities = List.of(
+        final List<MessageEntity> entities = List.of(
                 new MessageEntity(1L, "key", "Message1", date),
                 new MessageEntity(2L, "key", "Message2", date)
         );
         when(repository.findAll()).thenReturn(entities);
 
         // when / act
-        List<Message> result = jpaRepository.findAll();
+        final List<Message> result = jpaRepository.findAll();
 
         // then / assert
         assertThat(result).hasSize(2);
@@ -77,7 +78,7 @@ public class JpaMessageRepositoryTest {
                 .usingRecursiveComparison()
                 .isEqualTo(entities
                         .stream()
-                        .map(entity -> new Message(entity.id(), "key", entity.content(), entity.timestamp()))
+                        .map(MessageMapper.INSTANCE::toDto)
                         .collect(Collectors.toList())
                 );
 
